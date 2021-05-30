@@ -1,14 +1,12 @@
-// local dependency
-// npn i <packagename>
+var http = require('http')
+var fs = require('fs')
 
-// global dependency
-// npm install --g <packagename>
-
-// for package.json
-// npm init 
-
-const _ = require('lodash')
-
-const items = [1, [2, [3, [4]]]]
-const newitem = _.flattenDeep(items);
-console.log(newitem)
+http.createServer(function (req, res){
+    const fileStream = fs.createReadStream('./content/big.txt', 'utf8')
+    fileStream.on('open', () => {
+    fileStream.pipe(res)
+    })
+    fileStream.on('error', (err) => {
+        res.end(err)
+    })
+}).listen(5000)
